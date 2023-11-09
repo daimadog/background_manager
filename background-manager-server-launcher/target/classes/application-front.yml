@@ -1,0 +1,179 @@
+#开发环境配置
+server:
+  port: 8099
+
+#mybatis-plus配置
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/*.xml
+  global-config:
+    db-config:
+      logic-delete-field: is_deleted  # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+spring:
+  application:
+    name: background-manager
+# redis配置
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    jedis:
+      pool:
+        max-active: 20
+        max-wait: -1
+        max-idle: 10
+        min-idle: 0
+    timeout: 1800000
+  data:
+  #spring cloud 配置
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+#mysql配置
+  datasource:
+    dynamic:
+      primary: master
+      datasource:
+        master:
+          type: com.zaxxer.hikari.HikariDataSource
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/background_manager?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+          username: root
+          password: 123456
+        salve:
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/background_user?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+          username: root
+          password: 123456
+#文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+#FTP相关配置
+FTP:
+  address: 119.3.28.222
+  port: 22
+  username: ftpuser
+  password: 123456
+  basePath: /home/ftpuser/images
+#图片服务器相关配置
+IMAGE:
+  BASE:
+    URL: http://119.3.28.222:8089/images
+#Swagger配置
+swagger:
+  #本地环境启用swagger
+  enabled: true
+  title: "超算中心后台运营管理—接口文档"
+  description: "超算中心后台运营管理"
+  version: "V1.0"
+security:
+  excludes:
+    # 静态资源
+    - /**/*.css
+    - /**/*.js
+    # swagger 文档配置
+    - /doc.html/**
+    - /swagger-resources/**
+    - /v2/**
+    - /swagger-ui.html/**
+    - /api
+    - /api-docs
+    - /webjars/**
+    - /*/api-docs/**
+    - /favicon.ico
+    - /error
+    # druid 监控配置
+    - /druid/**
+    # 登录注册
+    - /register
+    - /login
+    #开放的新闻模块
+    - /activity/**
+    - /carousel/**
+    - /column/**
+    - /article/**
+    - /offline/**
+    - /resource/**
+    - /home/**
+    - /style/listQuery
+    - /style/listInfrastructure
+    - /seo/listQuery
+    - /checkLogin
+#Sa-token配置
+sa-token:
+  # token名称 (同时也是cookie名称)
+  token-name: Authorization
+  # token有效期，单位s 默认30天, -1代表永不过期
+  timeout: 2592000
+  # token临时有效期,单位s 默认15分钟，15分钟不操作token过期
+  activity-timeout: 9000
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: true
+  # sk-token前缀
+  token-prefix: Bearer
+  # token风格
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: true
+  # 是否从cookie里读取token
+  is-read-cookie: true
+  #是否从请求体里读取token
+  is-read-body: false
+# 配置线程池
+thread:
+  # 线程核心数
+  corePoolSize: 5
+  # 线程最大数
+  maxPoolSize: 8
+  # 任务容量
+  queueCapacity: 15
+  # 允许空闲时间
+  keepAlive: 120
+# 超算智算第三方接口配置
+sm2:
+  server:
+    cs:
+      privateKey: MIGTAgEAMBMGByqGSM49AgEGCCqBHM9VAYItBHkwdwIBAQQgN0L9YT41CwTEQhAL6QYDe+IyHFxiZdrAQDCmCo4FwK+gCgYIKoEcz1UBgi2hRANCAATQ0b9ruVKjcZz8OSulhybqCgf2Mcdg+4piZIOuEhQFB1LDX1De+luMr+xgzqWbfq/EZLE7OOvYIiE4iBC6wBlk
+    zs:
+      privateKey: MIGTAgEAMBMGByqGSM49AgEGCCqBHM9VAYItBHkwdwIBAQQgZn2Ir0mRCrTpB8eN7oNqy1E+IZss4JBXX97uk9nSwBmgCgYIKoEcz1UBgi2hRANCAAQz+pm/yunCEUcNfFCPbk+/OPYdgWG8lI0hOoGdGr4EekeJ/Jl3LZLqaiqj0werZVizS/TpvGni8QW2DGVa4Pco
+  cs:
+    publicKey: MFkwEwYHKoZIzj0CAQYIKoEcz1UBgi0DQgAEM/qZv8rpwhFHDXxQj25Pvzj2HYFhvJSNITqBnRq+BHpHifyZdy2S6moqo9MHq2VYs0v06bxp4vEFtgxlWuD3KA==
+  zs:
+    publicKey: MFkwEwYHKoZIzj0CAQYIKoEcz1UBgi0DQgAE0NG/a7lSo3Gc/DkrpYcm6goH9jHHYPuKYmSDrhIUBQdSw19Q3vpbjK/sYM6lm36vxGSxOzjr2CIhOIgQusAZZA==
+#超算智算url地址
+zs:
+  console:
+    url: https://console.tr6-test.com:8443
+  manage:
+    url: https://management.tr6-test.com:8443
+    userId: 25849
+cs:
+  console:
+    url: https://ac.nbaicc.com
+#forest配置
+forest:
+  backend: okhttp3             # 后端HTTP框架（默认为 okhttp3）
+  max-connections: 1000        # 连接池最大连接数（默认为 500）
+  max-route-connections: 500   # 每个路由的最大连接数（默认为 500）
+  max-request-queue-size: 100  # [自v1.5.22版本起可用] 最大请求等待队列大小
+  max-async-thread-size: 300   # [自v1.5.21版本起可用] 最大异步线程数
+  max-async-queue-size: 16     # [自v1.5.22版本起可用] 最大异步线程池队列大小
+#  timeout: 3000                # [已不推荐使用] 请求超时时间，单位为毫秒（默认为 3000）
+  connect-timeout: 3000        # 连接超时时间，单位为毫秒（默认为 timeout）
+  read-timeout: 3000           # 数据读取超时时间，单位为毫秒（默认为 timeout）
+  max-retry-count: 0           # 请求失败后重试次数（默认为 0 次不重试）
+  ssl-protocol: TLS            # 单向验证的HTTPS的默认TLS协议（默认为 TLS）
+  log-enabled: true            # 打开或关闭日志（默认为 true）
+  log-request: true            # 打开/关闭Forest请求日志（默认为 true）
+  log-response-status: true    # 打开/关闭Forest响应状态日志（默认为 true）
+  log-response-content: true   # 打开/关闭Forest响应内容日志（默认为 false）
+  async-mode: platform         # [自v1.5.27版本起可用] 异步模式（默认为 platform）
+

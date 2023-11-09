@@ -1,0 +1,6 @@
+#切换环境
+spring:
+  application:
+    name: background-manager-server
+  profiles:
+    active: front
